@@ -341,6 +341,16 @@ pub async fn get_server_module_options_context(
                 ..Default::default()
             };
 
+            // A common module option context to execute transforms if the module matches to
+            // the foreign code context condition.
+            // Currently this skips most of the custom transform, except
+            // related css transtition rules to allow to import css from
+            // external packages.
+            let foreign_code_module_options_context = ModuleOptionsContext {
+                custom_rules: internal_custom_rules.clone(),
+                ..module_options_context.clone()
+            };
+
             let internal_module_options_context = ModuleOptionsContext {
                 enable_typescript_transform: Some(TypescriptTransformOptions::default().cell()),
                 enable_jsx: Some(JsxTransformOptions::default().cell()),
@@ -358,7 +368,7 @@ pub async fn get_server_module_options_context(
                 rules: vec![
                     (
                         foreign_code_context_condition,
-                        module_options_context.clone().cell(),
+                        foreign_code_module_options_context.cell(),
                     ),
                     (
                         ContextCondition::InPath(next_js_fs().root()),
@@ -401,6 +411,12 @@ pub async fn get_server_module_options_context(
                 execution_context: Some(execution_context),
                 ..Default::default()
             };
+
+            let foreign_code_module_options_context = ModuleOptionsContext {
+                custom_rules: internal_custom_rules.clone(),
+                ..module_options_context.clone()
+            };
+
             let internal_module_options_context = ModuleOptionsContext {
                 enable_typescript_transform: Some(TypescriptTransformOptions::default().cell()),
                 custom_rules: internal_custom_rules,
@@ -417,7 +433,7 @@ pub async fn get_server_module_options_context(
                 rules: vec![
                     (
                         foreign_code_context_condition,
-                        module_options_context.clone().cell(),
+                        foreign_code_module_options_context.cell(),
                     ),
                     (
                         ContextCondition::InPath(next_js_fs().root()),
@@ -470,6 +486,12 @@ pub async fn get_server_module_options_context(
                 execution_context: Some(execution_context),
                 ..Default::default()
             };
+
+            let foreign_code_module_options_context = ModuleOptionsContext {
+                custom_rules: internal_custom_rules.clone(),
+                ..module_options_context.clone()
+            };
+
             let internal_module_options_context = ModuleOptionsContext {
                 enable_typescript_transform: Some(TypescriptTransformOptions::default().cell()),
                 custom_rules: internal_custom_rules,
@@ -485,7 +507,7 @@ pub async fn get_server_module_options_context(
                 rules: vec![
                     (
                         foreign_code_context_condition,
-                        module_options_context.clone().cell(),
+                        foreign_code_module_options_context.cell(),
                     ),
                     (
                         ContextCondition::InPath(next_js_fs().root()),
